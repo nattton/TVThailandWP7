@@ -1,0 +1,94 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="TV_Thailand.ProgramPivotPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False"
+    shell:SystemTray.Opacity="0.5"
+    xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK">
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True" IsVisible="True" Text="Loading ..."
+                             x:Name="loadingProgressBar" />
+    </shell:SystemTray.ProgressIndicator>
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Key="ProgramlistDataTemplate">
+            <Grid Height="180" MinWidth="400" Margin="0">
+                <TextBlock TextWrapping="Wrap" Text="{Binding name}" Margin="20,8,8,0" FontSize="29.333" Height="79" VerticalAlignment="Top" />
+                <TextBlock TextWrapping="Wrap" Text="{Binding date}" Margin="20,0,8,43" FontSize="24" Height="46" VerticalAlignment="Bottom" />
+                <TextBlock TextWrapping="Wrap" Text="{Binding count}" Margin="20,0,8,8" FontSize="16" Height="31" VerticalAlignment="Bottom" />
+                <Rectangle Height="5" VerticalAlignment="Bottom" d:LayoutOverrides="VerticalAlignment" Margin="0,0,0,1">
+                    <Rectangle.Fill>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FF1C3443" Offset="1"/>
+                            <GradientStop Color="#FF56B1E9"/>
+                        </RadialGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <!--Pivot Control-->
+        <controls:Pivot Title="tv thailand" x:Name="MainPivot" SelectionChanged="MainPivot_SelectionChanged">
+            <!--Pivot item one-->
+            <controls:PivotItem Header="episode">
+                <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                    <ListBox x:Name="ListBox_Programlist" ItemTemplate="{StaticResource ProgramlistDataTemplate}" Margin="0,0,0,50" SelectionChanged="ListBox_Programlist_SelectionChanged"/>
+                    <InMobiSDK:IMAdView 
+                            Name="AdView"
+                            DisplayText="InMobi"
+                            AdSize="15"
+                            VerticalAlignment="Bottom" Grid.Row="1" 
+                            AppId="a20b7e7e3ffa4e6385df300272968034" 
+                            Height="50" Width="320">
+                        <InMobiSDK:IMAdView.IMAdRequest>
+                            <InMobiSDK:IMAdRequest IsInTestMode="True" LocationInquiryAllowed="False" >
+
+                            </InMobiSDK:IMAdRequest>
+                        </InMobiSDK:IMAdView.IMAdRequest>
+                    </InMobiSDK:IMAdView>
+
+
+                    <InMobiSDK:IMAdView 
+Name="AdView1"
+      DisplayText="Test Ad"
+      AdSize="15"
+      RefTag="Ad0"
+      AppId=" a20b7e7e3ffa4e6385df300272968034 " 
+      RefreshInterval="20"
+      Background="#73808080" Foreground="Black" Height="50" Width="320">
+                        <InMobiSDK:IMAdView.IMAdRequest>
+                            <InMobiSDK:IMAdRequest IsInTestMode="True" LocationInquiryAllowed="False" >
+
+                            </InMobiSDK:IMAdRequest>
+                        </InMobiSDK:IMAdView.IMAdRequest>
+                    </InMobiSDK:IMAdView>
+                    
+                    
+                    
+                </Grid>
+            </controls:PivotItem>
+
+            <!--Pivot item two-->
+            <controls:PivotItem Header="details">
+                <Grid HorizontalAlignment="Left" Height="607" VerticalAlignment="Top" Width="456">
+                	<Image x:Name="ImgProgram" HorizontalAlignment="Center" Margin="10,10,10,0" Width="436" Height="200" VerticalAlignment="Top" CacheMode="BitmapCache"/>
+                	<ScrollViewer HorizontalAlignment="Left" Height="377" VerticalAlignment="Top" Width="436" Margin="10,230,0,0">
+                        <TextBlock x:Name="txtProgramDetail" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="{Binding ElementName=Scroller, Path=ViewportWidth}" />
+                	</ScrollViewer>
+                </Grid>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+    
+</phone:PhoneApplicationPage>

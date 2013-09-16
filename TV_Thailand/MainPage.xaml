@@ -1,0 +1,130 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="TV_Thailand.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.Opacity="0.5"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    >
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True" IsVisible="True" Text="Loading ..."
+                             x:Name="loadingProgressBar" />
+    </shell:SystemTray.ProgressIndicator>
+	<phone:PhoneApplicationPage.ApplicationBar>
+		<shell:ApplicationBar IsMenuEnabled="False" IsVisible="True" Mode="Minimized">
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.refresh.rest.png" Text="refresh" x:Name="ApplicationBarIconButton_Refresh" Click="ApplicationBarIconButton_Refresh_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.feature.search.rest.png" Text="Search" x:Name="ApplicationBarIconButton_Search" Click="ApplicationBarIconButton_Search_Click"/>
+		</shell:ApplicationBar>
+	</phone:PhoneApplicationPage.ApplicationBar>
+    
+
+    <!--LayoutRoot contains the root grid where all other page content is placed-->
+    <Grid x:Name="LayoutRoot">
+        <controls:Panorama x:Name="MainPanorama" Title="tv thailand" SelectionChanged="panorama_SelectionChanged">
+            <controls:Panorama.Background>
+                <ImageBrush ImageSource="Images/PanoramaBackground.jpg" />
+            </controls:Panorama.Background>
+
+            <!--Panorama item one-->
+        	<controls:PanoramaItem Header="what's new">
+        		<Grid>
+                    <ListBox x:Name="ListBox_WhatsNew" SelectionChanged="ListBox_WhatsNew_SelectionChanged" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="100" MinWidth="400" Margin="0,2">
+                                    <Image HorizontalAlignment="Left" Width="130" Source="{Binding thumbnail}" CacheMode="BitmapCache" Stretch="Fill"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding title}" Margin="143,8,8,8" FontSize="24" />
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu Name="ContextMenus" Opened="ContextMenu_Opened">
+                                            <toolkit:MenuItem Header="pin to start" Click="contextMenuPin_Click"/>
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+        	</controls:PanoramaItem>
+            <!--Panorama item two-->
+        	<controls:PanoramaItem Header="category">
+        		<Grid>
+        			<ListBox x:Name="ListBox_Category" ItemTemplate="{StaticResource CategoryDataTemplate}" SelectionChanged="ListBox_Category_SelectionChanged" />
+                </Grid>
+        	</controls:PanoramaItem>
+            <controls:PanoramaItem Header="channel">
+                <!--Double line list with image placeholder and text wrapping-->
+                <ListBox Grid.Row="0" x:Name="ListBox_Channel" SelectionChanged="ListBox_Channel_SelectionChanged">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <toolkit:HubTile  Margin="12,12,0,0"                                             
+                             Title="{Binding title}"
+                             Message="{Binding message}"
+                             Source="{Binding thumbnail}"
+                             GroupTag="Channel">
+                            </toolkit:HubTile>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PanoramaItem>
+            <controls:PanoramaItem Header="live channel">
+                <!--Double line list with image placeholder and text wrapping-->
+                <ListBox Grid.Row="0" x:Name="ListBox_LiveChannel" SelectionChanged="ListBox_LiveChannel_SelectionChanged">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <toolkit:HubTile  Margin="12,12,0,0"                                             
+                             Title="{Binding title}"
+                             Message="{Binding message}"
+                             Source="{Binding thumbnail}"
+                             GroupTag="LiveChannel">
+                            </toolkit:HubTile>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PanoramaItem>
+            <!--controls:PanoramaItem Header="favorites">
+                <ListBox Grid.Row="0" x:Name="listboxDataBinding">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <toolkit:WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <toolkit:HubTile  Margin="12,12,0,0"                                             
+                             Title="{Binding title}"
+                             Message="{Binding time}"
+                             Source="{Binding thumbnail}"
+                             GroupTag="BindingHubTile">
+                            </toolkit:HubTile>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PanoramaItem-->
+        </controls:Panorama>
+        
+        <phone:WebBrowser x:Name="webInHouseAds"  VerticalAlignment="Bottom" Height="80" Visibility="Collapsed" IsScriptEnabled="True" />
+    </Grid>
+
+    <!--Panorama-based applications should not show an ApplicationBar-->
+
+</phone:PhoneApplicationPage>
