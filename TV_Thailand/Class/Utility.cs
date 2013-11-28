@@ -67,12 +67,12 @@ namespace TV_Thailand
 
         public string getUrlLiveChannel()
         {
-            return String.Format(@"{0}/getLiveChannel/?device=wp", Domain);
+            return String.Format(@"{0}/getLiveChannel?device=wp", Domain);
         }
 
         public string getUrlProgram(string cat_id, int start)
         {
-            return String.Format(@"{0}/category/{1}/{2}/?device=wp&time={3}", Domain, cat_id, start, GetTimestamp());
+            return String.Format(@"{0}/category/{1}/{2}?device=wp&time={3}", Domain, cat_id, start, GetTimestamp());
         }
 
         public string getUrlWhatsNew(int start)
@@ -87,12 +87,12 @@ namespace TV_Thailand
 
         public string getUrlProgramlist(string program_id, int start)
         {
-            return String.Format(@"{0}/episode/{1}/{2}/?device=wp&time={3}", Domain, program_id, start, GetTimestamp());
+            return String.Format(@"{0}/episode/{1}/{2}?device=wp&time={3}", Domain, program_id, start, GetTimestamp());
         }
 
         public string getUrlViewProgramlist(string programlist_id, int start)
         {
-            return String.Format(@"{0}/view_epiode/{1}/?device=wp", Domain, programlist_id);
+            return String.Format(@"{0}/view_epiode/{1}?device=wp", Domain, programlist_id);
         }
 
         public string getUrlProgramDetail(string program_id)
@@ -245,7 +245,7 @@ namespace TV_Thailand
 
         private void playMThaiVideoFromWeb(string videoId)
         {
-            Uri mthaiUri = new Uri("http://video.mthai.com/player.php?id=24M" + videoId + "M0");
+            Uri mthaiUri = new Uri("http://video.mthai.com/cool/player/" + videoId + ".html");
             WebClient webClient = new WebClient();
             webClient.Headers[HttpRequestHeader.UserAgent] = UserAgent_iOS;
             webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler((sender, e) =>
@@ -264,7 +264,7 @@ namespace TV_Thailand
 
         private void playMThaiVideoWithPassword(string videoId, string password)
         {
-            Uri mthaiUri = new Uri("http://video.mthai.com/player.php?id=24M" + videoId + "M0");
+            Uri mthaiUri = new Uri("http://video.mthai.com/cool/player/" + videoId + ".html");
             WebClient webClient = new WebClient();
 
             webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
