@@ -31,7 +31,6 @@ namespace TV_Thailand
         bool isLoadWhatsNew = false;
         bool isLoadCategory = false;
         bool isLoadChannel = false;
-        bool isLoadLiveChannel = false;
 
         public class HubTileData
         {
