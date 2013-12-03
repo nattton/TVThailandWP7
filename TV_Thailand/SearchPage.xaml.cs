@@ -71,15 +71,14 @@ namespace TV_Thailand
                 programItems.Clear();
 
                 JObject json = JObject.Parse(e.Result);
-                string thumbnail_path = json["thumbnail_path"].Value<string>();
                 JToken programs = json["programs"];
 
                 foreach (JToken program in programs)
                 {
                     ProgramItem programItem = new ProgramItem();
-                    programItem.program_id = program["program_id"].Value<string>();
+                    programItem.program_id = program["id"].Value<string>();
                     programItem.title = program["title"].Value<string>();
-                    programItem.thumbnail = string.Format(@"{0}{1}", thumbnail_path, program["thumbnail"].Value<string>());
+                    programItem.thumbnail = program["thumbnail"].Value<string>();
                     programItems.Add(programItem);
                 }
 

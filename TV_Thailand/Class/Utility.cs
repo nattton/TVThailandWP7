@@ -60,14 +60,19 @@ namespace TV_Thailand
             return String.Format(@"{0}/category?device=wp", Domain);
         }
 
+        public string getUrlCategory(string cat_id, int start)
+        {
+            return String.Format(@"{0}/category/{1}/{2}?device=wp&time={3}", Domain, cat_id, start, GetTimestamp());
+        }
+
         public string getUrlChannel()
         {
             return String.Format(@"{0}/channel?device=wp", Domain);
         }
 
-        public string getUrlProgram(string cat_id, int start)
+        public string getUrlChannel(string cat_id, int start)
         {
-            return String.Format(@"{0}/category/{1}/{2}?device=wp&time={3}", Domain, cat_id, start, GetTimestamp());
+            return String.Format(@"{0}/channel/{1}/{2}?device=wp&time={3}", Domain, cat_id, start, GetTimestamp());
         }
 
         public string getUrlWhatsNew(int start)
@@ -77,7 +82,7 @@ namespace TV_Thailand
 
         public string getUrlProgramSearch(string keyword, int start)
         {
-            return String.Format(@"{0}/getProgramSearch/{1}?device=wp&keyword={2}&time={3}", Domain, start, keyword, GetTimestamp());
+            return String.Format(@"{0}/search/{1}?device=wp&keyword={2}&time={3}", Domain, start, keyword, GetTimestamp());
         }
 
         public string getUrlProgramlist(string program_id, int start)

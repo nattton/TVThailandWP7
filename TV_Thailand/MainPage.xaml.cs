@@ -72,7 +72,6 @@ namespace TV_Thailand
             loadInHosueAds(); 
             loadCategory();
             loadChannel();
-            loadLiveChannel();
         }
 
         private void panorama_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -82,7 +81,6 @@ namespace TV_Thailand
             btnRefresh.Click -= ApplicationBarIconButton_RefreshCategory_Click;
             btnRefresh.Click -= ApplicationBarIconButton_Refresh_Click;
             btnRefresh.Click -= ApplicationBarIconButton_RefreshChannel_Click;
-            btnRefresh.Click -= ApplicationBarIconButton_RefreshLiveChannel_Click;
 
             if (MainPanorama.SelectedIndex == 0)
             {
@@ -103,14 +101,6 @@ namespace TV_Thailand
                 //HubTileService.UnfreezeGroup("Channel");
                 if (!isLoadChannel)
                     loadChannel();
-            }
-            else if (MainPanorama.SelectedIndex == 3)
-            {
-                btnRefresh.Click += ApplicationBarIconButton_RefreshLiveChannel_Click;
-                //HubTileService.FreezeGroup("Channel");
-                //HubTileService.UnfreezeGroup("LiveChannel");
-                if (!isLoadLiveChannel)
-                loadLiveChannel();
             }
         }
 
@@ -271,16 +261,11 @@ namespace TV_Thailand
             }
         }
 
-        private void loadLiveChannel()
-        {
-
-        }
-
         private void ListBox_Category_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ListBox_Category.SelectedIndex == -1) return;
             CategoryItem selectedCat = categoryItems[ListBox_Category.SelectedIndex];
-            NavigationService.Navigate(new Uri("/ProgramPage.xaml?cat_id=" + selectedCat.id + "&cat_name=" + HttpUtility.UrlEncode(selectedCat.title), UriKind.Relative));
+            NavigationService.Navigate(new Uri("/ProgramPage.xaml?mode=cat&id=" + selectedCat.id + "&title=" + HttpUtility.UrlEncode(selectedCat.title), UriKind.Relative));
             ListBox_Category.SelectedIndex = -1;
         }
 
@@ -288,7 +273,7 @@ namespace TV_Thailand
         {
             if (ListBox_Channel.SelectedIndex == -1) return;
             ChannelItem selectedCh = channelItems[ListBox_Channel.SelectedIndex];
-            NavigationService.Navigate(new Uri("/ProgramPage.xaml?cat_id=" + ( int.Parse(selectedCh.id) + 100) + "&cat_name=" + HttpUtility.UrlEncode(selectedCh.title), UriKind.Relative));
+            NavigationService.Navigate(new Uri("/ProgramPage.xaml?mode=ch&id=" + selectedCh.id + "&title=" + HttpUtility.UrlEncode(selectedCh.title), UriKind.Relative));
             ListBox_Channel.SelectedIndex = -1;
         }
 
@@ -313,11 +298,6 @@ namespace TV_Thailand
         private void ApplicationBarIconButton_RefreshChannel_Click(object sender, EventArgs e)
         {
             loadChannel();
-        }
-
-        private void ApplicationBarIconButton_RefreshLiveChannel_Click(object sender, EventArgs e)
-        {
-            loadLiveChannel();
         }
 
         private void ApplicationBarIconButton_Search_Click(object sender, EventArgs e)

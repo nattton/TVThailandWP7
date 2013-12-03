@@ -22,7 +22,8 @@ namespace TV_Thailand
     public partial class ProgramPage : PhoneApplicationPage
     {
         List<ProgramItem> programItems = new List<ProgramItem>();
-        string cat_id = "";
+        string mode = ""; // cat, ch
+        string id = "";
         ScrollViewer scrollViewer;
         bool isEmptyProgram = false;
 
@@ -110,12 +111,13 @@ namespace TV_Thailand
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            string cat_name = "";
+            string title = "";
 
-            NavigationContext.QueryString.TryGetValue("cat_id", out cat_id);
-            NavigationContext.QueryString.TryGetValue("cat_name", out cat_name);
+            NavigationContext.QueryString.TryGetValue("title", out title);
+            NavigationContext.QueryString.TryGetValue("mode", out mode);
+            NavigationContext.QueryString.TryGetValue("id", out id);
 
-            PageTitle.Text = cat_name;
+            PageTitle.Text = title;
             loadProgram();
         }
 
@@ -128,8 +130,12 @@ namespace TV_Thailand
             else
             {
                 SystemTray.IsVisible = loadingProgressBar.IsVisible = true;
-                string url = Utility.Instance.getUrlProgram(cat_id, programItems.Count);
-                //string url = Utility.Domain + "/api/getProgram/" + cat_id + "/" + programItems.Count.ToString();
+                string url = "";
+                if (mode == "cat")
+                    url = Utility.Instance.getUrlCategory(id, programItems.Count);
+                else if (mode == "ch")
+                    url = Utility.Instance.getUrlChannel(id, programItems.Count);
+
                 Uri whatsNewUri = new Uri(url);
                 WebClient webClient = new WebClient();
                 webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(program_DownloadStringCompleted);
