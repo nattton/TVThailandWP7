@@ -65,11 +65,6 @@ namespace TV_Thailand
             return String.Format(@"{0}/channel?device=wp", Domain);
         }
 
-        public string getUrlLiveChannel()
-        {
-            return String.Format(@"{0}/getLiveChannel?device=wp", Domain);
-        }
-
         public string getUrlProgram(string cat_id, int start)
         {
             return String.Format(@"{0}/category/{1}/{2}?device=wp&time={3}", Domain, cat_id, start, GetTimestamp());

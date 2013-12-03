@@ -13,8 +13,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False"
-    shell:SystemTray.Opacity="0.5"
-    xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK">
+    shell:SystemTray.Opacity="0.5">
     <shell:SystemTray.ProgressIndicator>
         <shell:ProgressIndicator IsIndeterminate="True" IsVisible="True" Text="Loading ..."
                              x:Name="loadingProgressBar" />
@@ -44,38 +43,6 @@
             <controls:PivotItem Header="episode">
                 <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
                     <ListBox x:Name="ListBox_Programlist" ItemTemplate="{StaticResource ProgramlistDataTemplate}" Margin="0,0,0,50" SelectionChanged="ListBox_Programlist_SelectionChanged"/>
-                    <InMobiSDK:IMAdView 
-                            Name="AdView"
-                            DisplayText="InMobi"
-                            AdSize="15"
-                            VerticalAlignment="Bottom" Grid.Row="1" 
-                            AppId="a20b7e7e3ffa4e6385df300272968034" 
-                            Height="50" Width="320">
-                        <InMobiSDK:IMAdView.IMAdRequest>
-                            <InMobiSDK:IMAdRequest IsInTestMode="True" LocationInquiryAllowed="False" >
-
-                            </InMobiSDK:IMAdRequest>
-                        </InMobiSDK:IMAdView.IMAdRequest>
-                    </InMobiSDK:IMAdView>
-
-
-                    <InMobiSDK:IMAdView 
-Name="AdView1"
-      DisplayText="Test Ad"
-      AdSize="15"
-      RefTag="Ad0"
-      AppId=" a20b7e7e3ffa4e6385df300272968034 " 
-      RefreshInterval="20"
-      Background="#73808080" Foreground="Black" Height="50" Width="320">
-                        <InMobiSDK:IMAdView.IMAdRequest>
-                            <InMobiSDK:IMAdRequest IsInTestMode="True" LocationInquiryAllowed="False" >
-
-                            </InMobiSDK:IMAdRequest>
-                        </InMobiSDK:IMAdView.IMAdRequest>
-                    </InMobiSDK:IMAdView>
-                    
-                    
-                    
                 </Grid>
             </controls:PivotItem>
 

@@ -5,7 +5,6 @@
 	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK"
 	mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
 	x:Class="TV_Thailand.ProgramPage"
 	FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -54,17 +53,5 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <InMobiSDK:IMAdView 
-                            Name="AdView"
-                            DisplayText="InMobi"
-                            AdSize="15"
-                            VerticalAlignment="Bottom" Grid.Row="1" 
-                            AppId="a20b7e7e3ffa4e6385df300272968034" 
-                            Height="50" Width="320">
-        </InMobiSDK:IMAdView>
-        <!-- adduplex:AdControl x:Name="adDuplexAd" 
-                    AppId="34775" VerticalAlignment="Bottom" Grid.Row="1" 
-                    /-->
-		<!--ContentPanel - place additional content here-->
 	</Grid>
 </phone:PhoneApplicationPage>

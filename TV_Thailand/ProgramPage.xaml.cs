@@ -210,39 +210,5 @@ namespace TV_Thailand
         {
             loadProgram();
         }
-
-        #region InMobi
-
-        //Invoked when an exception is raised from IMAdView
-        private void AdView1_AdRequestFailed(InMobi.WpSdk.IMAdView IMAdView, InMobi.WpSdk.IMAdViewErrorEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine(e.ErrorCode.ToString() + e.ErrorDescription.ToString());
-        }
-
-        //Invoked when Ad is loaded
-        private void AdView1_AdRequestLoaded(InMobi.WpSdk.IMAdView IMAdView, InMobi.WpSdk.IMAdViewSuccessEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine(e.ResponseCode.ToString() + e.ResponseDescription.ToString());
-        }
-
-        //Invoked when full screen Ad displayed is closed
-        private void AdView1_DismissFullAdScreen(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Full screen closed");
-        }
-
-        //Invoked when the navigating away from current page as Click To Action on IMAdView 
-        private void AdView1_LeaveApplication(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Moving out of application");
-        }
-
-        //Invoked when the full screen ad has been opened, but not yet fully loaded
-        private void AdView1_ShowFullAdScreen(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Displaying full screen");
-        }
-
-        #endregion
     }
 }

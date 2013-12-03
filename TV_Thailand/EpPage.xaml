@@ -6,7 +6,6 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:InMobiSDK="clr-namespace:InMobi.WpSdk;assembly=InMobiWP7SDK"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -37,15 +36,6 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
         	<ListBox x:Name="ListBox_Ep" ItemTemplate="{StaticResource EpDataTemplate}" SelectionChanged="ListBox_Ep_SelectionChanged" Background="{x:Null}" Margin="0,0,0,50" /></Grid>
-        <InMobiSDK:IMAdView 
-                            Name="AdView"
-                            DisplayText="InMobi"
-                            AdSize="15"
-                            VerticalAlignment="Bottom" Grid.Row="1" 
-                            AppId="a20b7e7e3ffa4e6385df300272968034" 
-                            
-                            Height="50" Width="320">
-        </InMobiSDK:IMAdView>
     </Grid>
 
     

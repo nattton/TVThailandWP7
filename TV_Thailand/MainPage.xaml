@@ -81,26 +81,6 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
-            <controls:PanoramaItem Header="live channel">
-                <!--Double line list with image placeholder and text wrapping-->
-                <ListBox Grid.Row="0" x:Name="ListBox_LiveChannel" SelectionChanged="ListBox_LiveChannel_SelectionChanged">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <toolkit:WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <toolkit:HubTile  Margin="12,12,0,0"                                             
-                             Title="{Binding title}"
-                             Message="{Binding message}"
-                             Source="{Binding thumbnail}"
-                             GroupTag="LiveChannel">
-                            </toolkit:HubTile>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </controls:PanoramaItem>
             <!--controls:PanoramaItem Header="favorites">
                 <ListBox Grid.Row="0" x:Name="listboxDataBinding">
                     <ListBox.ItemsPanel>

@@ -151,6 +151,29 @@ namespace TV_Thailand
             else
             {   
                 JObject json = JObject.Parse(e.Result);
+                JToken jInfo = json["info"];
+
+                if (jInfo != null)
+                {
+                    string thumbnail = jInfo["thumbnail"].Value<string>();
+                    if (thumbnail != "")
+                    {
+                        Uri uri = new Uri(thumbnail, UriKind.Absolute);
+                        ImgProgram.Source = new BitmapImage(uri);
+                    }
+
+                    string title = jInfo["title"].Value<string>();
+                    string detail = jInfo["detail"].Value<string>();
+                    string time = jInfo["description"].Value<string>();
+                    string count = jInfo["view_count"].Value<string>();
+                    int views = 0;
+                    Int32.TryParse(count, out views);
+                    string fullDetail = String.Format("{0}\n\n{1}\n\n{2}\n\n{3} Views", title, time, detail, views.ToString("#,###"));
+                    txtProgramDetail.Text = fullDetail;
+                }
+
+
+
                 JToken programlists = json["episodes"];
                 isEmptyProgramlist = true;
                 foreach (JToken programlist in programlists)
@@ -210,80 +233,9 @@ namespace TV_Thailand
         {
             if (MainPivot.SelectedIndex == 1 && !isLoadDetail)
             {
-                loadProgramDetail();
+
             }
         }
 
-        private void loadProgramDetail()
-        {
-            SystemTray.IsVisible = loadingProgressBar.IsVisible = true;
-            WebClient webClient = new WebClient();
-            webClient.DownloadStringCompleted += loadDetail_DownloadStringCompleted;
-            webClient.DownloadStringAsync(new Uri(Utility.Instance.getUrlProgramDetail(program_id)));
-        }
-
-        void loadDetail_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            SystemTray.IsVisible = loadingProgressBar.IsVisible = false;
-            if (e.Error != null)
-            {
-                MessageBox.Show(e.Error.Message);
-            }
-            else
-            {
-                isLoadDetail = true;
-                JObject json = JObject.Parse(e.Result);
-
-                string thumbnail = json["thumbnail"].Value<string>();
-                if (thumbnail != "")
-                {
-                    Uri uri = new Uri(thumbnail, UriKind.Absolute);
-                    ImgProgram.Source = new BitmapImage(uri);
-                }
-
-                string title = json["title"].Value<string>();
-                string detail = json["detail"].Value<string>();
-                string time = json["time"].Value<string>();
-                string count = json["count"].Value<string>();
-                int views = 0;
-                Int32.TryParse(count, out views);
-                string fullDetail = String.Format("{0}\n\n{1}\n\n{2}\n\n{3} Views", title, time, detail, views.ToString("#,###"));
-                txtProgramDetail.Text = fullDetail;
-            }
-        }
-
-        #region InMobi
-
-        //Invoked when an exception is raised from IMAdView
-        private void AdView1_AdRequestFailed(InMobi.WpSdk.IMAdView IMAdView, InMobi.WpSdk.IMAdViewErrorEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine(e.ErrorCode.ToString() + e.ErrorDescription.ToString());
-        }
-
-        //Invoked when Ad is loaded
-        private void AdView1_AdRequestLoaded(InMobi.WpSdk.IMAdView IMAdView, InMobi.WpSdk.IMAdViewSuccessEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine(e.ResponseCode.ToString() + e.ResponseDescription.ToString());
-        }
-
-        //Invoked when full screen Ad displayed is closed
-        private void AdView1_DismissFullAdScreen(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Full screen closed");
-        }
-
-        //Invoked when the navigating away from current page as Click To Action on IMAdView 
-        private void AdView1_LeaveApplication(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Moving out of application");
-        }
-
-        //Invoked when the full screen ad has been opened, but not yet fully loaded
-        private void AdView1_ShowFullAdScreen(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Displaying full screen");
-        }
-
-        #endregion
     }
 }

@@ -25,7 +25,6 @@ namespace TV_Thailand
     {
         List<CategoryItem> categoryItems = new List<CategoryItem>();
         List<ChannelItem> channelItems = new List<ChannelItem>();
-        List<LiveChannelItem> liveChannelItems = new List<LiveChannelItem>();
         List<ProgramItem> programItems = new List<ProgramItem>();
         List<InHouseAdItem> inHouseAds = new List<InHouseAdItem>();
 
@@ -291,16 +290,6 @@ namespace TV_Thailand
             ChannelItem selectedCh = channelItems[ListBox_Channel.SelectedIndex];
             NavigationService.Navigate(new Uri("/ProgramPage.xaml?cat_id=" + ( int.Parse(selectedCh.id) + 100) + "&cat_name=" + HttpUtility.UrlEncode(selectedCh.title), UriKind.Relative));
             ListBox_Channel.SelectedIndex = -1;
-        }
-
-        private void ListBox_LiveChannel_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ListBox_LiveChannel.SelectedIndex == -1) return;
-            LiveChannelItem selectedCh = liveChannelItems[ListBox_LiveChannel.SelectedIndex];
-            WebBrowserTask webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri(selectedCh.url, UriKind.Absolute);
-            webBrowserTask.Show();
-            ListBox_LiveChannel.SelectedIndex = -1;
         }
 
         private void ListBox_WhatsNew_SelectionChanged(object sender, SelectionChangedEventArgs e)
