@@ -18,11 +18,15 @@ using System.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using TV_Thailand.Class;
 using Microsoft.Phone.Tasks;
+using vservWindowsPhone;
 
 namespace TV_Thailand
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        // Initialize VservSDK
+        VservAdControl VAC = VservAdControl.Instance;
+
         List<CategoryItem> categoryItems = new List<CategoryItem>();
         List<ChannelItem> channelItems = new List<ChannelItem>();
         List<ProgramItem> programItems = new List<ProgramItem>();
@@ -48,18 +52,20 @@ namespace TV_Thailand
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            // VAC.DisplayAd("c84927ed", LayoutRoot);
+
             Visibility v = (Visibility)Resources["PhoneLightThemeVisibility"];
 
-            string strBGPano = "Images/PanoramaBackground.jpg";
+            string strBGPano = "Images/PanoramaDark.jpg";
             if (v == System.Windows.Visibility.Visible)
             {
                 // Is light theme
-                strBGPano = "Images/PanoramaBackgroundLight.jpg";
+                strBGPano = "Images/PanoramaLight.jpg";
             }
             else
             {
                 // Is dark theme
-                strBGPano = "Images/PanoramaBackground.jpg";
+                strBGPano = "Images/PanoramaDark.jpg";
             }
 
             BitmapImage bitmapImage = new BitmapImage(new Uri(strBGPano, UriKind.Relative));

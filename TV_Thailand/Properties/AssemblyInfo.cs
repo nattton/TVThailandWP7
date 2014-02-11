@@ -9,10 +9,10 @@ using System.Resources;
 [assembly: AssemblyTitle("TV Thailand")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Makathon Labs Co.,Ltd.")]
+[assembly: AssemblyCompany("Code Mobi Co.,Ltd.")]
 [assembly: AssemblyProduct("TV Thailand")]
-[assembly: AssemblyCopyright("Copyright © Makathon Labs Co.,Ltd. 2013")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © Code Mobi Co.,Ltd. 2013")]
+[assembly: AssemblyTrademark("Code Mobi Co.,Ltd.")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -32,6 +32,6 @@ using System.Resources;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.1.0.5")]
+[assembly: AssemblyFileVersion("1.1.0.5")]
 [assembly: NeutralResourcesLanguageAttribute("th")]

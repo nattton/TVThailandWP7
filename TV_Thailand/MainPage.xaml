@@ -32,7 +32,7 @@
     <Grid x:Name="LayoutRoot">
         <controls:Panorama x:Name="MainPanorama" Title="tv thailand" SelectionChanged="panorama_SelectionChanged">
             <controls:Panorama.Background>
-                <ImageBrush ImageSource="Images/PanoramaBackground.jpg" />
+                <ImageBrush ImageSource="Images/PanoramaDark.jpg" />
             </controls:Panorama.Background>
 
             <!--Panorama item one-->

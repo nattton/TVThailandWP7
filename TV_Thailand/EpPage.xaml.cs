@@ -12,11 +12,15 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using MyToolkit.Multimedia;
+using vservWindowsPhone;
 
 namespace TV_Thailand
 {
     public partial class EpPage : PhoneApplicationPage
     {
+        // Initialize VservSDK
+        VservAdControl VAC = VservAdControl.Instance;
+
         string src_type = "";
         string password = "";
         List<EpItem> epItems = new List<EpItem>();
@@ -24,6 +28,20 @@ namespace TV_Thailand
         public EpPage()
         {
             InitializeComponent();
+
+            this.Loaded += EpPage_Loaded;
+
+            VAC.VservAdNoFill += VAC_VservAdNoFill;
+        }
+
+        void VAC_VservAdNoFill(object sender, EventArgs e)
+        {
+            adGrid.Visibility = Visibility.Collapsed;
+        }
+
+        void EpPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            VAC.RenderAd("562db24e", adGrid);
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)

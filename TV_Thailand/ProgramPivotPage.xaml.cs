@@ -20,10 +20,15 @@ using MyToolkit.Multimedia;
 using System.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using System.Windows.Media.Imaging;
+using vservWindowsPhone;
+
 namespace TV_Thailand
 {
     public partial class ProgramPivotPage : PhoneApplicationPage
     {
+        // Initialize VservSDK
+        VservAdControl VAC = VservAdControl.Instance;
+
         List<ProgramlistItem> programlistItems = new List<ProgramlistItem>();
         string program_id = "";
         ScrollViewer scrollViewer;
@@ -33,7 +38,20 @@ namespace TV_Thailand
         public ProgramPivotPage()
         {
             InitializeComponent();
+            this.Loaded += ProgramPivotPage_Loaded;
+            VAC.VservAdNoFill += VAC_VservAdNoFill;
+
             ListBox_Programlist.Loaded += new RoutedEventHandler(ListBox_Programlist_Loaded);
+        }
+
+        void VAC_VservAdNoFill(object sender, EventArgs e)
+        {
+            adGrid.Visibility = Visibility.Collapsed;
+        }
+
+        void ProgramPivotPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            VAC.RenderAd("562db24e", adGrid);
         }
 
         #region Load More

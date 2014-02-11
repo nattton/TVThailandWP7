@@ -35,7 +35,9 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-        	<ListBox x:Name="ListBox_Ep" ItemTemplate="{StaticResource EpDataTemplate}" SelectionChanged="ListBox_Ep_SelectionChanged" Background="{x:Null}" Margin="0,0,0,50" /></Grid>
+        	<ListBox x:Name="ListBox_Ep" ItemTemplate="{StaticResource EpDataTemplate}" SelectionChanged="ListBox_Ep_SelectionChanged" Background="{x:Null}" Margin="0,0,0,50" />
+            <Grid Name="adGrid" HorizontalAlignment="Left" Height="100" VerticalAlignment="Bottom" Width="480" Margin="-10,174,0,0"/>
+        </Grid>
     </Grid>
 
     

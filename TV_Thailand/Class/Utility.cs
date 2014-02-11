@@ -157,7 +157,14 @@ namespace TV_Thailand
         {
             if (sourceType.Equals("0"))
             {
-                YouTube.Play(videoId, true, YouTubeQuality.Quality480P);
+                YouTube.Play(videoId, YouTubeQuality.Quality480P, (ex) => 
+                    {
+                        if (ex != null)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                );
 
                 //url = "http://www.youtube.com/watch?v=" + videoKeys[0];
                 //string url = "http://www.youtube.com/embed/" + videoId + "?autoplay=1";
@@ -289,33 +296,47 @@ namespace TV_Thailand
 
         void ExtractMthaiVideo(string videoId, string content)
         {
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(content);
-            foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//source"))
+            try
             {
-                string src = link.GetAttributeValue("src", "");
-                string[] sUri = src.Split('/');
-                if (sUri.Length > 0)
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(content);
+                HtmlNodeCollection sources = doc.DocumentNode.SelectNodes("//source");
+                if (sources != null && sources.Count > 0)
                 {
-                    if (sUri[sUri.Length - 1].StartsWith(videoId))
+                    foreach (HtmlNode link in sources)
                     {
-                        MediaPlayerLauncher launcher = new MediaPlayerLauncher
+                        string src = link.GetAttributeValue("src", "");
+                        string[] sUri = src.Split('/');
+                        if (sUri.Length > 0)
                         {
-                            Controls = MediaPlaybackControls.All,
-                            Media = new Uri(src)
-                        };
-                        launcher.Show();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Sorry, video missing please try again.");
+                            if (sUri[sUri.Length - 1].StartsWith(videoId))
+                            {
+                                MediaPlayerLauncher launcher = new MediaPlayerLauncher
+                                {
+                                    Controls = MediaPlaybackControls.All,
+                                    Media = new Uri(src)
+                                };
+                                launcher.Show();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Sorry, video not found. please try again later.");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Sorry, video not found. please try again later.");
+                        }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Sorry, video have problem.");
+                    MessageBox.Show("Sorry, video not found. please try again later.");
                 }
-                
+            }
+            catch (Exception e)
+            {
+                // MessageBox.Show(e.Message);
             }
         }
     }
