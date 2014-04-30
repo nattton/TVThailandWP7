@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Xml;
 using TV_Thailand.Class;
 
 namespace TV_Thailand
@@ -36,9 +37,13 @@ namespace TV_Thailand
             }
         }
 
+        public static string APP_VERSION;
         public static string Domain = "http://tv.makathon.com/api2";
         public static string UserAgent_iOS = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B143 Safari/8536.25";
 
+        public static string OTV_DOMAIN = "http://api.otv.co.th/api/index.php";
+        public static string OTV_APP_ID = "15";
+        public static string OTV_API_VERSION = "1.0";
 
         public static String GetTimestamp()
         {
@@ -100,6 +105,16 @@ namespace TV_Thailand
             return String.Format(@"{0}/getProgramDetail/{1}/?device=wp", Domain, program_id);
         }
 
+        public string getUrlOTVEpisode(string apiName, string showId)
+        {
+            if (apiName.Equals("Ch7"))
+            {
+                return String.Format("{0}/Ch7/content/{1}/{2}", OTV_DOMAIN, OTV_APP_ID, showId);
+            }
+
+            return String.Format("{0}/Content/index/{1}/{2}/{3}/{4}", OTV_DOMAIN, OTV_APP_ID, GetAppVersion(), OTV_API_VERSION, showId); 
+        }
+
         public string videoThumbnail(string video_id, string src_type)
         {
             if(src_type.Equals("0"))
@@ -115,6 +130,25 @@ namespace TV_Thailand
                 return "http://video.mthai.com/thumbnail/" + video_id + ".jpg";
             }
             return "";
+        }
+
+        public static string GetAppVersion()
+        {
+            if (APP_VERSION == null)
+            {
+                var xmlReaderSettings = new XmlReaderSettings
+                {
+                    XmlResolver = new XmlXapResolver()
+                };
+
+                using (var xmlReader = XmlReader.Create("WMAppManifest.xml", xmlReaderSettings))
+                {
+                    xmlReader.ReadToDescendant("App");
+                    APP_VERSION = xmlReader.GetAttribute("Version");
+                    return APP_VERSION;
+                }
+            }
+            return APP_VERSION;
         }
 
         public string DecodeFrom64(string base64String)

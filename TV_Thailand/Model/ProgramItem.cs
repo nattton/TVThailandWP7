@@ -17,5 +17,8 @@ namespace TV_Thailand
         public string title { get; set; }
         public string thumbnail { get; set; }
         public string description { get; set; }
+        public bool is_otv { get; set; }
+        public string otv_id { get; set; }
+        public string otv_api_name { get; set; }
     }
 }

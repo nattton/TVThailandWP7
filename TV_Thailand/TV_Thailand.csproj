@@ -115,23 +115,32 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\wp8\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\wp8\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Phone">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\wp8\Microsoft.Threading.Tasks.Extensions.Phone.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WebAnalytics">
       <HintPath>..\packages\MSAF.GoogleAnalytics.1.5.4.2\lib\sl4-wp71\Microsoft.WebAnalytics.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WebAnalytics.Behaviors">
       <HintPath>..\packages\MSAF.GoogleAnalytics.1.5.4.2\lib\sl4-wp71\Microsoft.WebAnalytics.Behaviors.dll</HintPath>
     </Reference>
-    <Reference Include="MyToolkit, Version=2.0.14.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MyToolkit, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MyToolkit.2.0.14.0\lib\portable-win+net40+sl40+wp71\MyToolkit.dll</HintPath>
+      <HintPath>..\packages\MyToolkit.2.2.2.0\lib\portable-net45+wp8+win8+wpa81\MyToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="MyToolkit.Extended, Version=2.0.14.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MyToolkit.Extended, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MyToolkit.Extended.2.0.14.0\lib\wp80\MyToolkit.Extended.dll</HintPath>
+      <HintPath>..\packages\MyToolkit.Extended.2.2.2.0\lib\wp80\MyToolkit.Extended.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\portable-net45+wp80+win8\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition">
       <HintPath>..\packages\MSAF.GoogleAnalytics.1.5.4.2\lib\sl4-wp71\System.ComponentModel.Composition.dll</HintPath>
@@ -145,14 +154,18 @@
     <Reference Include="System.Xml.XPath">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.Xml.XPath.dll</HintPath>
     </Reference>
-    <Reference Include="vservWindowsPhone">
-      <HintPath>..\packages\mobi.vserv.ads.1.0.8\lib\wp80\vservWindowsPhone.dll</HintPath>
+    <Reference Include="vservWindowsPhone, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\mobi.vserv.ads.1.0.9\lib\wp80\vservWindowsPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OTVPartPage.xaml.cs">
+      <DependentUpon>OTVPartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\CategoryItem.cs" />
     <Compile Include="Model\ChannelItem.cs" />
@@ -164,8 +177,14 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\OTVEpisodeItem.cs" />
+    <Compile Include="Model\OTVPartItem.cs" />
+    <Compile Include="Model\OTVShowItem.cs" />
     <Compile Include="Model\ProgramItem.cs" />
     <Compile Include="Model\ProgramlistItem.cs" />
+    <Compile Include="OTVShowPivotPage.xaml.cs">
+      <DependentUpon>OTVShowPivotPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProgramPage.xaml.cs">
       <DependentUpon>ProgramPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -187,11 +206,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="OTVPartPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="EpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OTVShowPivotPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -214,7 +241,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\AppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
@@ -239,6 +268,9 @@
   <ItemGroup>
     <Folder Include="DLL\" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -249,4 +281,9 @@
   </Target>
   -->
   <ProjectExtensions />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
 </Project>

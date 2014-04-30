@@ -164,6 +164,11 @@ namespace TV_Thailand
                     programItem.title = program["title"].Value<string>();
                     programItem.thumbnail = program["thumbnail"].Value<string>();
                     programItem.description = program["description"].Value<string>();
+
+                    programItem.is_otv = "1".Equals(program["is_otv"].Value<string>());
+                    programItem.otv_id = program["otv_id"].Value<string>();
+                    programItem.otv_api_name = program["otv_api_name"].Value<string>();
+
                     programItems.Add(programItem);
                 }
 
@@ -181,9 +186,18 @@ namespace TV_Thailand
         {
             if (ListBox_Program.SelectedIndex == -1) return;
             ProgramItem selectedProgram = programItems[ListBox_Program.SelectedIndex];
-            NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
-            ListBox_Program.SelectedIndex = -1;
-
+            if (selectedProgram.is_otv)
+            {
+                NavigationService.Navigate(new Uri("/OTVShowPivotPage.xaml?title=" + HttpUtility.UrlEncode(selectedProgram.title) 
+                    + "&otv_id=" + selectedProgram.otv_id 
+                    + "&otv_api_name=" + selectedProgram.otv_api_name, UriKind.Relative));
+                ListBox_Program.SelectedIndex = -1;
+            }
+            else
+            {
+                NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
+                ListBox_Program.SelectedIndex = -1;
+            }
         }
 
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)
