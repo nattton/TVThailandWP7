@@ -61,10 +61,12 @@ namespace TV_Thailand
         private void ListBox_Ep_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ListBox_Ep.SelectedIndex == -1) return;
+
+            OTVPartItem selectedPart = episode.parts[ListBox_Ep.SelectedIndex];
+            PhoneApplicationService.Current.State["OTVPart"] = selectedPart;
+            //NavigationService.Navigate(new Uri("/VideoPlayerPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/MediaPlayerPage.xaml", UriKind.Relative));
             
-            //NavigationService.Navigate(new Uri("/WebPage.xaml?url=" + HttpUtility.UrlEncode(url), UriKind.Relative));
-
-
 
             ListBox_Ep.SelectedIndex = -1;
         }

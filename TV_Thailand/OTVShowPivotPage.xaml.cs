@@ -202,6 +202,8 @@ namespace TV_Thailand
                     episode.detail = (content["detail"] != null) ? content["detail"].Value<string>() : "";
                     episode.date = (content["date"] != null) ? "ออกอากาศ " + content["date"].Value<string>() : "";
 
+
+                    episode.parts = new List<OTVPartItem>();
                     JToken items = content["item"];
                     OTVPartItem partItem = null;
                     foreach (JToken item in items)
@@ -211,20 +213,21 @@ namespace TV_Thailand
                             partItem = new OTVPartItem();
                         }
 
-                        string mediaCode = (json["media_code"] != null) ? json["media_code"].Value<string>() : "";
+                        string mediaCode = (item["media_code"] != null) ? item["media_code"].Value<string>() : "";
                         if ("1001".Equals(mediaCode)) 
                         {
-                            partItem.vastURL = json["stream_url"].Value<string>();
+                            partItem.vastURL = item["stream_url"].Value<string>();
                         }
                         else if ("1000".Equals(mediaCode) || "1002".Equals(mediaCode))
                         {
-                            partItem.partId = content["id"].Value<string>();
-                            partItem.nameTh = content["name_th"].Value<string>();
-                            partItem.thumbnail = content["thumbnail"].Value<string>();
-                            partItem.streamURL = json["stream_url"].Value<string>();
+                            partItem.partId = item["id"].Value<string>();
+                            partItem.nameTh = item["name_th"].Value<string>();
+                            partItem.thumbnail = item["thumbnail"].Value<string>();
+                            partItem.streamURL = item["stream_url"].Value<string>();
                             partItem.mediaCode = mediaCode;
 
                             episode.parts.Add(partItem);
+                            partItem = null;
                         }
                     }
 

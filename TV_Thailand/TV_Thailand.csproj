@@ -29,6 +29,8 @@
     <Utf8Output>true</Utf8Output>
     <ExpressionBlendVersion>5.0.31017.0</ExpressionBlendVersion>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -100,6 +102,9 @@
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.3.0\lib\portable-win+net40+sl50+wp8\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="Google.WebAnalytics">
       <HintPath>..\packages\MSAF.GoogleAnalytics.1.5.4.2\lib\sl4-wp71\Google.WebAnalytics.dll</HintPath>
     </Reference>
@@ -142,11 +147,35 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SM.Media">
+      <HintPath>..\packages\SM.Media\SM.Media.dll</HintPath>
+    </Reference>
+    <Reference Include="SM.Media.Builder">
+      <HintPath>..\packages\SM.Media\SM.Media.Builder.dll</HintPath>
+    </Reference>
+    <Reference Include="SM.Media.MediaPlayer.WP8">
+      <HintPath>..\packages\SM.Media\SM.Media.MediaPlayer.WP8.dll</HintPath>
+    </Reference>
+    <Reference Include="SM.Media.Platform.WP8">
+      <HintPath>..\packages\SM.Media\SM.Media.Platform.WP8.dll</HintPath>
+    </Reference>
+    <Reference Include="SM.TsParser">
+      <HintPath>..\packages\SM.Media\SM.TsParser.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition">
       <HintPath>..\packages\MSAF.GoogleAnalytics.1.5.4.2\lib\sl4-wp71\System.ComponentModel.Composition.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition.Initialization">
       <HintPath>..\packages\MSAF.GoogleAnalytics.1.5.4.2\lib\sl4-wp71\System.ComponentModel.Composition.Initialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MSAF.GoogleAnalytics.1.5.4.2\lib\sl4-wp71\System.Windows.Interactivity.dll</HintPath>
@@ -163,6 +192,10 @@
     <Compile Include="Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MediaElementManager.cs" />
+    <Compile Include="MediaPlayerPage.xaml.cs">
+      <DependentUpon>MediaPlayerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="OTVPartPage.xaml.cs">
       <DependentUpon>OTVPartPage.xaml</DependentUpon>
@@ -197,6 +230,9 @@
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Class\Utility.cs" />
+    <Compile Include="VideoPlayerPage.xaml.cs">
+      <DependentUpon>VideoPlayerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WebPage.xaml.cs">
       <DependentUpon>WebPage.xaml</DependentUpon>
     </Compile>
@@ -206,6 +242,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="MediaPlayerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="OTVPartPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -231,6 +271,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VideoPlayerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -265,11 +309,14 @@
     <Resource Include="Background.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DLL\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.PlayerFramework.WP8.Core, Version=1.8.2.2">
+      <Name>Microsoft Player Framework</Name>
+    </SDKReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
@@ -285,5 +332,12 @@
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
     <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
 </Project>
