@@ -153,6 +153,11 @@ namespace TV_Thailand
                     programItem.title = program["title"].Value<string>();
                     programItem.thumbnail = program["thumbnail"].Value<string>();
                     programItem.description = program["description"].Value<string>();
+
+                    programItem.is_otv = "1".Equals(program["is_otv"].Value<string>());
+                    programItem.otv_id = program["otv_id"].Value<string>();
+                    programItem.otv_api_name = program["otv_api_name"].Value<string>();
+
                     programItems.Add(programItem);
 
                 }
@@ -253,7 +258,9 @@ namespace TV_Thailand
                     channelItem.id = channel["id"].Value<string>();
                     channelItem.title = channel["title"].Value<string>();
                     channelItem.description = channel["description"].Value<string>();
-                    channelItem.thumbnail = channel["thumbnail"].Value<string>();
+                    channelItem.thumbnail = (channel["url"] != null) ? channel["url"].Value<string>() : "";
+                    channelItem.url = (channel["url"] != null) ? channel["url"].Value<string>() : "";
+                    channelItem.hasShow = ("1".Equals(channel["has_show"]));
                     channelItems.Add(channelItem);
                 }
                 Dispatcher.BeginInvoke(
@@ -270,6 +277,7 @@ namespace TV_Thailand
         {
             if (ListBox_Category.SelectedIndex == -1) return;
             CategoryItem selectedCat = categoryItems[ListBox_Category.SelectedIndex];
+            PhoneApplicationService.Current.State["CategoryItem"] = selectedCat;
             NavigationService.Navigate(new Uri("/ProgramPage.xaml?mode=cat&id=" + selectedCat.id + "&title=" + HttpUtility.UrlEncode(selectedCat.title), UriKind.Relative));
             ListBox_Category.SelectedIndex = -1;
         }
@@ -278,6 +286,7 @@ namespace TV_Thailand
         {
             if (ListBox_Channel.SelectedIndex == -1) return;
             ChannelItem selectedCh = channelItems[ListBox_Channel.SelectedIndex];
+            PhoneApplicationService.Current.State["ChannelItem"] = selectedCh;
             NavigationService.Navigate(new Uri("/ProgramPage.xaml?mode=ch&id=" + selectedCh.id + "&title=" + HttpUtility.UrlEncode(selectedCh.title), UriKind.Relative));
             ListBox_Channel.SelectedIndex = -1;
         }
@@ -286,7 +295,17 @@ namespace TV_Thailand
         {
             if (ListBox_WhatsNew.SelectedIndex == -1) return;
             ProgramItem selectedProgram = programItems[ListBox_WhatsNew.SelectedIndex];
-            NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
+            if (selectedProgram.is_otv)
+            {
+                NavigationService.Navigate(new Uri("/OTVShowPivotPage.xaml?title=" + HttpUtility.UrlEncode(selectedProgram.title)
+                    + "&otv_id=" + selectedProgram.otv_id
+                    + "&otv_api_name=" + selectedProgram.otv_api_name, UriKind.Relative));
+            }
+            else
+            {
+                NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
+            }
+
             ListBox_WhatsNew.SelectedIndex = -1;
         }
 

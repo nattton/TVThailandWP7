@@ -27,10 +27,28 @@ namespace TV_Thailand
         ScrollViewer scrollViewer;
         bool isEmptyProgram = false;
 
+        ChannelItem channelItem;
+        CategoryItem categoryItem;
+
         public ProgramPage()
         {
             InitializeComponent();
             ListBox_Program.Loaded += new RoutedEventHandler(ListBox_Program_Loaded);
+
+            if (PhoneApplicationService.Current.State.ContainsKey("ChannelItem"))
+            {
+                channelItem = (ChannelItem)PhoneApplicationService.Current.State["ChannelItem"];
+            }
+            else if (PhoneApplicationService.Current.State.ContainsKey("CategoryItem"))
+            {
+                categoryItem = (CategoryItem)PhoneApplicationService.Current.State["CategoryItem"];
+            }
+
+            if (!(channelItem != null && (channelItem.url.Length > 0)))
+            {
+                ApplicationBarIconButton liveButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                ApplicationBar.Buttons.Remove(liveButton);
+            }
         }
 
 
@@ -191,13 +209,13 @@ namespace TV_Thailand
                 NavigationService.Navigate(new Uri("/OTVShowPivotPage.xaml?title=" + HttpUtility.UrlEncode(selectedProgram.title) 
                     + "&otv_id=" + selectedProgram.otv_id 
                     + "&otv_api_name=" + selectedProgram.otv_api_name, UriKind.Relative));
-                ListBox_Program.SelectedIndex = -1;
             }
             else
             {
                 NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
-                ListBox_Program.SelectedIndex = -1;
             }
+
+            ListBox_Program.SelectedIndex = -1;
         }
 
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)
@@ -229,6 +247,12 @@ namespace TV_Thailand
         private void ApplicationBarIconButton_Refresh_Click(object sender, EventArgs e)
         {
             loadProgram();
+        }
+
+        private void appBarIcon_live_Click(object sender, System.EventArgs e)
+        {
+            PhoneApplicationService.Current.State["StreamURL"] = channelItem.url;
+            NavigationService.Navigate(new Uri("/MediaPlayerPage.xaml", UriKind.Relative));
         }
     }
 }
