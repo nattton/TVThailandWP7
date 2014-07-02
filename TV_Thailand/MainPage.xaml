@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Landscape"
+    SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.Opacity="0.5"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -63,7 +63,7 @@
         	</controls:PanoramaItem>
             <controls:PanoramaItem Header="channel">
                 <!--Double line list with image placeholder and text wrapping-->
-                <ListBox Grid.Row="0" x:Name="ListBox_Channel" SelectionChanged="ListBox_Channel_SelectionChanged">
+                <ListBox Grid.Row="0" x:Name="ListBox_Channel">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <toolkit:WrapPanel Orientation="Horizontal" />
@@ -73,7 +73,7 @@
                         <DataTemplate>
                             <toolkit:HubTile  Margin="12,12,0,0"                                             
                              Title="{Binding title}"
-                             Message="{Binding message}"
+                             Message="{Binding description}"
                              Source="{Binding thumbnail}"
                              GroupTag="Channel">
                             </toolkit:HubTile>
@@ -81,25 +81,12 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
-            <!--controls:PanoramaItem Header="favorites">
-                <ListBox Grid.Row="0" x:Name="listboxDataBinding">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <toolkit:WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <toolkit:HubTile  Margin="12,12,0,0"                                             
-                             Title="{Binding title}"
-                             Message="{Binding time}"
-                             Source="{Binding thumbnail}"
-                             GroupTag="BindingHubTile">
-                            </toolkit:HubTile>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </controls:PanoramaItem-->
+            <!--Panorama item three-->
+            <controls:PanoramaItem Header="radio">
+                <Grid>
+                    <ListBox x:Name="ListBox_Radio" ItemTemplate="{StaticResource CategoryDataTemplate}" SelectionChanged="ListBox_Radio_SelectionChanged" />
+                </Grid>
+            </controls:PanoramaItem>
         </controls:Panorama>
         
         <phone:WebBrowser x:Name="webInHouseAds"  VerticalAlignment="Bottom" Height="80" Visibility="Collapsed" IsScriptEnabled="True" />

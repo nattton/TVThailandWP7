@@ -20,7 +20,7 @@
                              x:Name="loadingProgressBar" />
     </shell:SystemTray.ProgressIndicator>
     <phone:PhoneApplicationPage.ApplicationBar>
-		<shell:ApplicationBar IsMenuEnabled="False" Mode="Minimized">
+		<shell:ApplicationBar IsMenuEnabled="False" Mode="Default">
             <shell:ApplicationBarIconButton x:Name="appBarIcon_live" IconUri="/Assets/AppBar/transport.play.png" Text="live" Click="appBarIcon_live_Click"/>
             <shell:ApplicationBarIconButton x:Name="appBarIcon_refresh" IconUri="/Assets/AppBar/appbar.refresh.rest.png" Text="Refresh" Click="ApplicationBarIconButton_Refresh_Click" />
 		</shell:ApplicationBar>
