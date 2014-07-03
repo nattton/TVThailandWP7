@@ -16,6 +16,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Xml;
 using TV_Thailand.Class;
+using Windows.System;
 
 namespace TV_Thailand
 {
@@ -58,6 +59,16 @@ namespace TV_Thailand
         public string getInHouseAd()
         {
             return String.Format(@"{0}/advertise?device=wp", Domain);
+        }
+
+        public string getKapookAds()
+        {
+            return "http://kapi.kapook.com/partner/url";
+        }
+
+        public string getUrlSection()
+        {
+            return String.Format(@"{0}/section?device=wp", Domain);
         }
 
         public string getUrlCategory()
@@ -191,14 +202,19 @@ namespace TV_Thailand
         {
             if (sourceType.Equals("0"))
             {
-                YouTube.Play(videoId, YouTubeQuality.Quality480P, (ex) => 
-                    {
-                        if (ex != null)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
-                    }
-                );
+                try
+                {
+                    YouTube.PlayWithPageDeactivationAsync(videoId, true, YouTubeQuality.Quality480P);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+
+                }
+
 
                 //url = "http://www.youtube.com/watch?v=" + videoKeys[0];
                 //string url = "http://www.youtube.com/embed/" + videoId + "?autoplay=1";

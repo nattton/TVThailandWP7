@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,5 +21,16 @@ namespace TV_Thailand
         public bool is_otv { get; set; }
         public string otv_id { get; set; }
         public string otv_api_name { get; set; }
+
+        public ProgramItem(JToken program)
+        {
+            this.program_id = program["id"].Value<string>();
+            this.title = program["title"].Value<string>();
+            this.thumbnail = program["thumbnail"].Value<string>();
+            this.description = program["description"].Value<string>();
+            this.is_otv = "1".Equals(program["is_otv"].Value<string>());
+            this.otv_id = program["otv_id"].Value<string>();
+            this.otv_api_name = program["otv_api_name"].Value<string>();
+        }
     }
 }

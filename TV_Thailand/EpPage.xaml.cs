@@ -65,12 +65,9 @@ namespace TV_Thailand
         {
             string[] videoKeys = videoKeys_decode.Split(new string[] { "," }, StringSplitOptions.None);
 
-            for (int i = 0; i < videoKeys.Length; i++)
+            for (int i = 0, length = videoKeys.Length; i < length; i++)
             {
-                EpItem epItem = new EpItem();
-                epItem.epname = "ตอนที่ " + (i + 1).ToString() + " / " + videoKeys.Length.ToString();
-                epItem.videoKey = videoKeys[i];
-                epItem.thumbnail = Utility.Instance.videoThumbnail(epItem.videoKey, src_type);
+                EpItem epItem = new EpItem(i, length, videoKeys[i], src_type);
                 epItems.Add(epItem);
             }
 
@@ -82,7 +79,6 @@ namespace TV_Thailand
             if (ListBox_Ep.SelectedIndex == -1) return;
             string videoKey = epItems[ListBox_Ep.SelectedIndex].videoKey;
             Utility.Instance.PlayVideo(src_type, videoKey, password);
-            //NavigationService.Navigate(new Uri("/WebPage.xaml?url=" + HttpUtility.UrlEncode(url), UriKind.Relative));
             ListBox_Ep.SelectedIndex = -1;
         }
     }

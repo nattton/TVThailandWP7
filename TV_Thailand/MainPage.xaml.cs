@@ -16,9 +16,11 @@ using Newtonsoft.Json.Linq;
 using System.Windows.Media.Imaging;
 using System.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
-using TV_Thailand.Class;
 using Microsoft.Phone.Tasks;
 using vservWindowsPhone;
+
+using TV_Thailand.Class;
+using TV_Thailand.Model;
 
 namespace TV_Thailand
 {
@@ -29,12 +31,14 @@ namespace TV_Thailand
 
         List<CategoryItem> categoryItems = new List<CategoryItem>();
         List<ChannelItem> channelItems = new List<ChannelItem>();
+        List<RadioItem> radioItems = new List<RadioItem>();
         List<ProgramItem> programItems = new List<ProgramItem>();
         List<InHouseAdItem> inHouseAds = new List<InHouseAdItem>();
 
         bool isLoadWhatsNew = false;
         bool isLoadCategory = false;
         bool isLoadChannel = false;
+        bool isLoadRadio = false;
 
         public class HubTileData
         {
@@ -48,6 +52,8 @@ namespace TV_Thailand
         {
             InitializeComponent();
             Loaded += MainPage_Loaded;
+            ListBox_Channel.SelectionChanged += ListBox_Channel_SelectionChanged;
+            ListBox_Radio.SelectionChanged += ListBox_Radio_SelectionChanged;
         }
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -74,9 +80,8 @@ namespace TV_Thailand
             MainPanorama.Background = imageBrush;
 
             loadWhatsNew();
-            loadInHosueAds(); 
-            loadCategory();
-            loadChannel();
+            loadInHosueAds();
+            loadSection();
         }
 
         private void panorama_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -96,8 +101,8 @@ namespace TV_Thailand
             else if (MainPanorama.SelectedIndex == 1)
             {
                 btnRefresh.Click += ApplicationBarIconButton_RefreshCategory_Click;
-                if (!isLoadCategory) 
-                    loadCategory();           
+                if (!isLoadCategory)
+                    loadSection();           
             }
             else if (MainPanorama.SelectedIndex == 2)
             {
@@ -105,7 +110,13 @@ namespace TV_Thailand
                 //HubTileService.FreezeGroup("LiveChannel");
                 //HubTileService.UnfreezeGroup("Channel");
                 if (!isLoadChannel)
-                    loadChannel();
+                    loadSection();
+            }
+            else if (MainPanorama.SelectedIndex == 3)
+            {
+                btnRefresh.Click += ApplicationBarIconButton_RefreshCategory_Click;
+                if (!isLoadRadio)
+                    loadSection();
             }
         }
 
@@ -148,16 +159,7 @@ namespace TV_Thailand
                 JToken programs = json["programs"];
                 foreach (JToken program in programs)
                 {
-                    ProgramItem programItem = new ProgramItem();
-                    programItem.program_id = program["id"].Value<string>();
-                    programItem.title = program["title"].Value<string>();
-                    programItem.thumbnail = program["thumbnail"].Value<string>();
-                    programItem.description = program["description"].Value<string>();
-
-                    programItem.is_otv = "1".Equals(program["is_otv"].Value<string>());
-                    programItem.otv_id = program["otv_id"].Value<string>();
-                    programItem.otv_api_name = program["otv_api_name"].Value<string>();
-
+                    ProgramItem programItem = new ProgramItem(program);
                     programItems.Add(programItem);
 
                 }
@@ -166,14 +168,12 @@ namespace TV_Thailand
                     {
                         ListBox_WhatsNew.ItemsSource = null;
                         ListBox_WhatsNew.ItemsSource = programItems;
-                        //listboxDataBinding.ItemsSource = null;
-                        //listboxDataBinding.ItemsSource = programItems;
                     }
                 );
             }
         }
 
-        private void loadCategory()
+        private void loadSection()
         {
             if (!NetworkInterface.GetIsNetworkAvailable())
             {
@@ -182,15 +182,14 @@ namespace TV_Thailand
             else
             {
                 SystemTray.IsVisible = loadingProgressBar.IsVisible = true;
-                string url = Utility.Instance.getUrlCategory();
-                Uri whatsNewUri = new Uri(url);
+                Uri sectionUri = new Uri(Utility.Instance.getUrlSection());
                 WebClient webClient = new WebClient();
-                webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(category_DownloadStringCompleted);
-                webClient.DownloadStringAsync(whatsNewUri);
+                webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(section_DownloadStringCompleted);
+                webClient.DownloadStringAsync(sectionUri);
             }
         }
 
-        void category_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        void section_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             SystemTray.IsVisible = loadingProgressBar.IsVisible = false;
             if (e.Error != null)
@@ -199,79 +198,72 @@ namespace TV_Thailand
             }
             else
             {
-                isLoadCategory = true;
                 JObject json = JObject.Parse(e.Result);
-                categoryItems.Clear();
                 JToken categories = json["categories"];
-                foreach (JToken category in categories)
-                {
-                    CategoryItem categoryItem = new CategoryItem();
-                    categoryItem.id = category["id"].Value<string>();
-                    categoryItem.title = category["title"].Value<string>();
-                    categoryItem.description = category["description"].Value<string>();
-                    categoryItem.thumbnail = category["thumbnail"].Value<string>();
-                    categoryItems.Add(categoryItem);
-                }
-                Dispatcher.BeginInvoke(
-                    () =>
-                    {
-                        ListBox_Category.ItemsSource = null;
-                        ListBox_Category.ItemsSource = categoryItems;
-                    }
-                );
+                JToken channels = json["channels"];
+                JToken radios = json["radios"];
+
+                categoriesParser(categories);
+                channelsParser(channels);
+                radiosParser(radios);
             }
         }
 
-        private void loadChannel()
+        private void categoriesParser(JToken categories)
         {
-            if (!NetworkInterface.GetIsNetworkAvailable())
+            isLoadCategory = true;
+            categoryItems.Clear();
+            foreach (JToken category in categories)
             {
-                MessageBox.Show("Applications unable to connect to internet");
+                CategoryItem categoryItem = new CategoryItem(category);
+                categoryItems.Add(categoryItem);
             }
-            else
-            {
-                SystemTray.IsVisible = loadingProgressBar.IsVisible = true;
-                string url = Utility.Instance.getUrlChannel();
-                Uri channelUri = new Uri(url);
-                WebClient webClient = new WebClient();
-                webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(channel_DownloadStringCompleted);
-                webClient.DownloadStringAsync(channelUri);
-            }
+            Dispatcher.BeginInvoke(
+                () =>
+                {
+                    ListBox_Category.ItemsSource = null;
+                    ListBox_Category.ItemsSource = categoryItems;
+                }
+            );
         }
 
-        void channel_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        private void channelsParser(JToken channels)
         {
-            SystemTray.IsVisible = loadingProgressBar.IsVisible = false;
-            if (e.Error != null)
+            isLoadChannel = true;
+            channelItems.Clear();
+            foreach (JToken channel in channels)
             {
-                MessageBox.Show(e.Error.Message);
+                ChannelItem channelItem = new ChannelItem(channel);
+                channelItems.Add(channelItem);
             }
-            else
-            {
-                isLoadChannel = true;
-                JObject json = JObject.Parse(e.Result);
-                channelItems.Clear();
-                JToken channels = json["categories"];
-                foreach (JToken channel in channels)
-                {
-                    ChannelItem channelItem = new ChannelItem();
-                    channelItem.id = channel["id"].Value<string>();
-                    channelItem.title = channel["title"].Value<string>();
-                    channelItem.description = channel["description"].Value<string>();
-                    channelItem.thumbnail = (channel["url"] != null) ? channel["url"].Value<string>() : "";
-                    channelItem.url = (channel["url"] != null) ? channel["url"].Value<string>() : "";
-                    channelItem.hasShow = ("1".Equals(channel["has_show"]));
-                    channelItems.Add(channelItem);
-                }
-                Dispatcher.BeginInvoke(
+            Dispatcher.BeginInvoke(
                     () =>
                     {
                         ListBox_Channel.ItemsSource = null;
                         ListBox_Channel.ItemsSource = channelItems;
                     }
-                );
-            }
+            );
         }
+
+        private void radiosParser(JToken radios)
+        {
+            radioItems.Clear();
+            foreach (JToken radio in radios)
+            {
+                RadioItem radioItem = new RadioItem(radio);
+                radioItems.Add(radioItem);
+            }
+
+            Dispatcher.BeginInvoke(
+                () =>
+                {
+                    ListBox_Radio.ItemsSource = null;
+                    ListBox_Radio.ItemsSource = radioItems;
+
+                }
+                );
+        }
+
 
         private void ListBox_Category_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -286,9 +278,65 @@ namespace TV_Thailand
         {
             if (ListBox_Channel.SelectedIndex == -1) return;
             ChannelItem selectedCh = channelItems[ListBox_Channel.SelectedIndex];
-            PhoneApplicationService.Current.State["ChannelItem"] = selectedCh;
-            NavigationService.Navigate(new Uri("/ProgramPage.xaml?mode=ch&id=" + selectedCh.id + "&title=" + HttpUtility.UrlEncode(selectedCh.title), UriKind.Relative));
+            if (selectedCh.url.Length > 0)
+            {
+                if (!selectedCh.hasShow)
+                {
+                    NavigateToPlayStreanm(selectedCh.url);
+                }
+                else
+                {
+                    CustomMessageBox messageBox = new CustomMessageBox()
+                    {
+                        Caption = "เลือกรายการ",
+                        Message = "เลือกรายการ",
+                        LeftButtonContent = "รายการย้อนหลัง",
+                        RightButtonContent = "ดูสด"
+                    };
+
+                    messageBox.Dismissed += (s1, e1) =>
+                        {
+                            switch (e1.Result)
+                            {
+                                case CustomMessageBoxResult.LeftButton:
+                                    NavigateToChannel(selectedCh);
+                                    break;
+                                case CustomMessageBoxResult.RightButton:
+                                    NavigateToPlayStreanm(selectedCh.url);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        };
+                    messageBox.Show();
+                }
+            }
+            else
+            {
+                NavigateToChannel(selectedCh);
+            }
+            
             ListBox_Channel.SelectedIndex = -1;
+        }
+
+        private void NavigateToChannel(ChannelItem channel)
+        {
+            PhoneApplicationService.Current.State["ChannelItem"] = channel;
+            NavigationService.Navigate(new Uri("/ProgramPage.xaml?mode=ch&id=" + channel.id + "&title=" + HttpUtility.UrlEncode(channel.title), UriKind.Relative));
+        }
+
+        private void NavigateToPlayStreanm(string url)
+        {
+            PhoneApplicationService.Current.State["StreamURL"] = url;
+            NavigationService.Navigate(new Uri("/MediaPlayerPage.xaml", UriKind.Relative));
+        }
+
+        private void ListBox_Radio_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListBox_Radio.SelectedIndex == -1) return;
+            RadioItem selectedRadio = radioItems[ListBox_Radio.SelectedIndex];
+            NavigateToPlayStreanm(selectedRadio.url);
+            ListBox_Radio.SelectedIndex = -1;
         }
 
         private void ListBox_WhatsNew_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -316,12 +364,12 @@ namespace TV_Thailand
 
         private void ApplicationBarIconButton_RefreshCategory_Click(object sender, EventArgs e)
         {
-            loadCategory();
+            loadSection();
         }
 
         private void ApplicationBarIconButton_RefreshChannel_Click(object sender, EventArgs e)
         {
-            loadChannel();
+            loadSection();
         }
 
         private void ApplicationBarIconButton_Search_Click(object sender, EventArgs e)
@@ -371,13 +419,9 @@ namespace TV_Thailand
                     JObject json = JObject.Parse(e.Result);
                     inHouseAds.Clear();
                     JToken ads = json["ads"];
-                    foreach (JToken adv in ads)
+                    foreach (JToken ad in ads)
                     {
-                        InHouseAdItem adData = new InHouseAdItem();
-                        adData.name = adv["name"].Value<string>();
-                        adData.url = adv["url"].Value<string>();
-                        adData.time = adv["time"].Value<string>();
-
+                        InHouseAdItem adData = new InHouseAdItem(ad);
                         inHouseAds.Add(adData);
                     }
                     playInHouseAd();

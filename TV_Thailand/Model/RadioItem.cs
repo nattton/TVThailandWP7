@@ -16,19 +16,14 @@ namespace TV_Thailand.Model
         public string description { get; set; }
         public string category { get; set; }
 
-        public RadioItem()
-        {
-
-        }
-
         public RadioItem(JToken radio)
         {
-            id = radio["id"].Value<string>();
-            title = radio["title"].Value<string>();
-            description = radio["description"].Value<string>();
-            thumbnail = (radio["thumbnail"] != null) ? radio["thumbnail"].Value<string>() : "";
-            url = (radio["url"] != null) ? radio["url"].Value<string>() : "";
-            category = radio["category"].Value<string>();
+            this.id = radio["id"].Value<string>();
+            this.title = radio["title"].Value<string>();
+            this.description = radio["description"].Value<string>();
+            this.thumbnail = (radio["thumbnail"] != null) ? radio["thumbnail"].Value<string>() : "";
+            this.url = (radio["url"] != null) ? radio["url"].Value<string>() : "";
+            this.category = radio["category"].Value<string>();
         }
     }
 }

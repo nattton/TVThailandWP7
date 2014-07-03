@@ -135,9 +135,9 @@
     <Reference Include="Microsoft.WebAnalytics.Behaviors">
       <HintPath>..\packages\MSAF.GoogleAnalytics.1.5.4.2\lib\sl4-wp71\Microsoft.WebAnalytics.Behaviors.dll</HintPath>
     </Reference>
-    <Reference Include="MyToolkit, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MyToolkit, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MyToolkit.2.2.2.0\lib\portable-net45+wp8+win8+wpa81\MyToolkit.dll</HintPath>
+      <HintPath>..\packages\MyToolkit.2.3.0.0\lib\portable-net45+wp8+win8+wpa81\MyToolkit.dll</HintPath>
     </Reference>
     <Reference Include="MyToolkit.Extended, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -197,6 +197,7 @@
     <Compile Include="MediaPlayerPage.xaml.cs">
       <DependentUpon>MediaPlayerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\RadioItem.cs" />
     <Compile Include="OTVPartPage.xaml.cs">
       <DependentUpon>OTVPartPage.xaml</DependentUpon>
     </Compile>

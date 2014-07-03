@@ -197,16 +197,7 @@ namespace TV_Thailand
                 foreach (JToken programlist in programlists)
                 {
                     isEmptyProgramlist = false;
-                    ProgramlistItem programlistItem = new ProgramlistItem();
-                    programlistItem.programlist_id = programlist["id"].Value<string>();
-                    string epname = (programlist["title"].Value<string>().Equals("")) ? "" : " - " + programlist["title"].Value<string>();
-                    programlistItem.name = "ตอนที่ " + programlist["ep"].Value<string>() + epname;
-                    programlistItem.youtube_encrypt = programlist["video_encrypt"].Value<string>();
-                    programlistItem.src_type = programlist["src_type"].Value<string>();
-                    programlistItem.date = "ออกอากาศ " + programlist["date"].Value<string>();
-                    int count = Convert.ToInt32(programlist["view_count"].Value<string>());
-                    programlistItem.count = ((count == 0) ? "0" : count.ToString("#,###")) + " Views";
-                    programlistItem.password = programlist["pwd"].Value<string>();
+                    ProgramlistItem programlistItem = new ProgramlistItem(programlist);
                     programlistItems.Add(programlistItem);
                 }
 

@@ -75,10 +75,7 @@ namespace TV_Thailand
 
                 foreach (JToken program in programs)
                 {
-                    ProgramItem programItem = new ProgramItem();
-                    programItem.program_id = program["id"].Value<string>();
-                    programItem.title = program["title"].Value<string>();
-                    programItem.thumbnail = program["thumbnail"].Value<string>();
+                    ProgramItem programItem = new ProgramItem(program);
                     programItems.Add(programItem);
                 }
 
