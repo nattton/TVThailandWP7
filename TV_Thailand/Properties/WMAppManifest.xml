@@ -4,7 +4,7 @@
   <Languages xmlns="">
     <Language code="th-TH" />
   </Languages>
-  <App xmlns="" ProductID="{9d8e5ef6-718e-4b84-9a80-7c004987eeb2}" Title="TV Thailand" RuntimeType="Silverlight" Version="1.1.0.5" Genre="apps.normal" Author="TV_Thailand author" Description="Watch TV from Youtube" Publisher="TV_Thailand" PublisherID="{9eaee46a-205c-41d3-83db-155470539486}">
+  <App xmlns="" ProductID="{9d8e5ef6-718e-4b84-9a80-7c004987eeb2}" Title="TV Thailand" RuntimeType="Silverlight" Version="1.2.0.0" Genre="apps.normal" Author="TV_Thailand author" Description="Watch TV from Youtube" Publisher="TV_Thailand" PublisherID="{9eaee46a-205c-41d3-83db-155470539486}">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
