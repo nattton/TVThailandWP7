@@ -16,7 +16,7 @@ namespace TV_Thailand.Model
         public string description { get; set; }
         public string category { get; set; }
 
-        public RadioItem(JToken radio)
+        public RadioItem (JToken radio)
         {
             this.id = radio["id"].Value<string>();
             this.title = radio["title"].Value<string>();

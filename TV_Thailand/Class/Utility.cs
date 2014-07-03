@@ -40,7 +40,7 @@ namespace TV_Thailand
 
         public static string APP_VERSION;
         public static string Domain = "http://tv.makathon.com/api2";
-        public static string UserAgent_iOS = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B143 Safari/8536.25";
+        //public static string UserAgent_iOS = "Mozilla/5.0 (iPhone; CPU iPhone OS 6_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B143 Safari/8536.25";
 
         public static string OTV_DOMAIN = "http://api.otv.co.th/api/index.php";
         public static string OTV_APP_ID = "15";
@@ -304,7 +304,7 @@ namespace TV_Thailand
         {
             Uri mthaiUri = new Uri("http://video.mthai.com/cool/player/" + videoId + ".html");
             WebClient webClient = new WebClient();
-            webClient.Headers[HttpRequestHeader.UserAgent] = UserAgent_iOS;
+            //webClient.Headers[HttpRequestHeader.UserAgent] = UserAgent_iOS;
             webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler((sender, e) =>
                 {
                     if (e.Error != null)
@@ -325,7 +325,7 @@ namespace TV_Thailand
             WebClient webClient = new WebClient();
 
             webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-            webClient.Headers[HttpRequestHeader.UserAgent] = UserAgent_iOS;
+            //webClient.Headers[HttpRequestHeader.UserAgent] = UserAgent_iOS;
             webClient.Encoding = Encoding.UTF8;
             webClient.UploadStringCompleted += new UploadStringCompletedEventHandler((sender, e) =>
                 {
@@ -346,6 +346,31 @@ namespace TV_Thailand
 
         void ExtractMthaiVideo(string videoId, string content)
         {
+            try
+            {
+                string varKey = "defaultClip";
+                int indexStart = content.IndexOf(varKey) + varKey.Length;
+                string lastContent = content.Substring(indexStart);
+                int indexEnd = lastContent.IndexOf(";");
+                string clipUrl = lastContent.Substring(0, indexEnd).Replace(" ", "").Replace("=", "").Replace("'", "");
+
+                MediaPlayerLauncher launcher = new MediaPlayerLauncher
+                {
+                    Controls = MediaPlaybackControls.All,
+                    Media = new Uri(clipUrl)
+                };
+                launcher.Show();
+
+                return;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+
+
+
             try
             {
                 HtmlDocument doc = new HtmlDocument();

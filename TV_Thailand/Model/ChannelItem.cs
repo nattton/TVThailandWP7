@@ -21,11 +21,16 @@ namespace TV_Thailand
         public string description { get; set; }
         public bool hasShow { get; set; }
 
-        public ChannelItem(JToken channel)
+        public ChannelItem ()
+        {
+
+        }
+
+        public ChannelItem (JToken channel)
         {
             this.id = channel["id"].Value<string>();
             this.title = channel["title"].Value<string>();
-            this.description = channel["description"].Value<string>();
+            this.description = (channel["description"] != null) ? channel["description"].Value<string>(): "";
             this.thumbnail = (channel["thumbnail"] != null) ? channel["thumbnail"].Value<string>() : "";
             this.url = (channel["url"] != null) ? channel["url"].Value<string>() : "";
             this.hasShow = ("1".Equals(channel["has_show"].Value<string>()));

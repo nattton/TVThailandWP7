@@ -18,12 +18,12 @@ namespace TV_Thailand
         public string epname { get; set; }
         public string thumbnail { get; set; }
 
-        public EpItem(JToken ep)
+        public EpItem ()
         {
 
         }
 
-        public EpItem(int i, int length, string videoKey, string src_type)
+        public EpItem (int i, int length, string videoKey, string src_type)
         {
             this.epname = "ตอนที่ " + (i + 1).ToString() + " / " + length.ToString();
             this.videoKey = videoKey;

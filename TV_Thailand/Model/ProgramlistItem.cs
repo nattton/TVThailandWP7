@@ -22,7 +22,7 @@ namespace TV_Thailand
         public string count { get; set; }
         public string password { get; set; }
         
-        public ProgramlistItem(JToken programlist)
+        public ProgramlistItem (JToken programlist)
         {
             this.programlist_id = programlist["id"].Value<string>();
             string epname = (programlist["title"].Value<string>().Equals("")) ? "" : " - " + programlist["title"].Value<string>();

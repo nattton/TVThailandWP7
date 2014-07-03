@@ -16,14 +16,17 @@ namespace TV_Thailand
     {
         public string id { get; set; }
         public string title { get; set; }
-        public string description { get; set; }
         public string thumbnail { get; set; }
 
-        public CategoryItem(JToken category)
+        public CategoryItem ()
+        {
+
+        }
+
+        public CategoryItem (JToken category)
         {
             this.id = category["id"].Value<string>();
             this.title = category["title"].Value<string>();
-            this.description = category["description"].Value<string>();
             this.thumbnail = category["thumbnail"].Value<string>();
         }
     }

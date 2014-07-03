@@ -437,8 +437,40 @@ namespace TV_Thailand
         {
             foreach (InHouseAdItem ads in inHouseAds)
             {
-                webInHouseAds.Navigate(new Uri(ads.url, UriKind.Absolute));
+                if(ads.name.ToLower().Equals("kapook"))
+                {
+                    playKapookAds();
+                }
+                else
+                {
+                    webInHouseAds.Navigate(new Uri(ads.url, UriKind.Absolute));
+                }
             }
+        }
+
+        private void playKapookAds()
+        {
+            WebClient webClient = new WebClient();
+            webClient.DownloadStringCompleted += (object sender, DownloadStringCompletedEventArgs e) =>
+            {
+                if (e.Error == null)
+                {
+                    try
+                    {
+                        JObject json = JObject.Parse(e.Result);
+                        string url1x1 = json["url_1x1"].Value<string>();
+                        string urlShow = json["url_show"].Value<string>();
+                        webInHouseAds.Navigate(new Uri(urlShow, UriKind.Absolute));
+                        web1x1.Navigate(new Uri(url1x1, UriKind.Absolute));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                }
+            };
+            webClient.DownloadStringAsync(new Uri(Utility.Instance.getKapookAds()));
         }
 
     }

@@ -12,7 +12,7 @@ namespace TV_Thailand.Class
         public string url { get; set; }
         public string time { get; set; }
 
-        public InHouseAdItem(JToken ad)
+        public InHouseAdItem (JToken ad)
         {
             this.name = ad["name"].Value<string>();
             this.url = ad["url"].Value<string>();

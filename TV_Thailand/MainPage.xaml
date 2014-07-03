@@ -90,6 +90,7 @@
         </controls:Panorama>
         
         <phone:WebBrowser x:Name="webInHouseAds"  VerticalAlignment="Bottom" Height="80" Visibility="Collapsed" IsScriptEnabled="True" />
+        <phone:WebBrowser x:Name="web1x1"  VerticalAlignment="Bottom" Height="80" Visibility="Collapsed" IsScriptEnabled="True" />
     </Grid>
 
     <!--Panorama-based applications should not show an ApplicationBar-->
