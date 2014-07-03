@@ -78,7 +78,7 @@ namespace TV_Thailand
         {
             if (ListBox_Ep.SelectedIndex == -1) return;
             string videoKey = epItems[ListBox_Ep.SelectedIndex].videoKey;
-            Utility.Instance.PlayVideo(src_type, videoKey, password);
+            if (!Utility.isLoading) Utility.Instance.PlayVideo(src_type, videoKey, password);
             ListBox_Ep.SelectedIndex = -1;
         }
     }

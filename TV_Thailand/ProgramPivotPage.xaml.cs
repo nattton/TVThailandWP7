@@ -226,7 +226,7 @@ namespace TV_Thailand
             }
             else if (videoKeys.Length == 1)
             {
-                Utility.Instance.PlayVideo(selectedProgram.src_type, videoKeys[0], selectedProgram.password);
+                if (!Utility.isLoading) Utility.Instance.PlayVideo(selectedProgram.src_type, videoKeys[0], selectedProgram.password);
             }
             else
             {

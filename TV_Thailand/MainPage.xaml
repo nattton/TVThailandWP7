@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="Portrait" Orientation="Landscape"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.Opacity="0.5"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
@@ -36,9 +36,9 @@
             </controls:Panorama.Background>
 
             <!--Panorama item one-->
-        	<controls:PanoramaItem Header="what's new">
+        	<controls:PanoramaItem Header="recents">
         		<Grid>
-                    <ListBox x:Name="ListBox_WhatsNew" SelectionChanged="ListBox_WhatsNew_SelectionChanged" >
+                    <ListBox x:Name="ListBox_Recent" SelectionChanged="ListBox_Recent_SelectionChanged" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Height="100" MinWidth="400" Margin="0,2">

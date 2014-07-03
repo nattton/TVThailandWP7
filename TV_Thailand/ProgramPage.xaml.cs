@@ -154,10 +154,10 @@ namespace TV_Thailand
                 else if (mode == "ch")
                     url = Utility.Instance.getUrlChannel(id, programItems.Count);
 
-                Uri whatsNewUri = new Uri(url);
+                Uri showUri = new Uri(url);
                 WebClient webClient = new WebClient();
                 webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(program_DownloadStringCompleted);
-                webClient.DownloadStringAsync(whatsNewUri);
+                webClient.DownloadStringAsync(showUri);
             }
         }
 
@@ -195,16 +195,18 @@ namespace TV_Thailand
         {
             if (ListBox_Program.SelectedIndex == -1) return;
             ProgramItem selectedProgram = programItems[ListBox_Program.SelectedIndex];
-            if (selectedProgram.is_otv)
-            {
-                NavigationService.Navigate(new Uri("/OTVShowPivotPage.xaml?title=" + HttpUtility.UrlEncode(selectedProgram.title) 
-                    + "&otv_id=" + selectedProgram.otv_id 
-                    + "&otv_api_name=" + selectedProgram.otv_api_name, UriKind.Relative));
-            }
-            else
-            {
-                NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
-            }
+            //if (selectedProgram.is_otv)
+            //{
+            //    NavigationService.Navigate(new Uri("/OTVShowPivotPage.xaml?title=" + HttpUtility.UrlEncode(selectedProgram.title) 
+            //        + "&otv_id=" + selectedProgram.otv_id 
+            //        + "&otv_api_name=" + selectedProgram.otv_api_name, UriKind.Relative));
+            //}
+            //else
+            //{
+                
+            //}
+
+            NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
 
             ListBox_Program.SelectedIndex = -1;
         }

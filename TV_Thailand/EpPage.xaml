@@ -9,10 +9,14 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="False">
-	<phone:PhoneApplicationPage.Resources>
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator IsIndeterminate="True" IsVisible="True" Text="Loading ..."
+                             x:Name="loadingProgressBar" />
+    </shell:SystemTray.ProgressIndicator>
+    <phone:PhoneApplicationPage.Resources>
 		<DataTemplate x:Key="EpDataTemplate">
 			<Grid Height="100" MinWidth="400" Margin="0,2">
                 <Image HorizontalAlignment="Left" Width="130" Source="{Binding thumbnail}" CacheMode="BitmapCache" Stretch="Fill"/>

@@ -9,7 +9,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Landscape" Orientation="Landscape"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
     xmlns:mmppf="clr-namespace:Microsoft.PlayerFramework;assembly=Microsoft.PlayerFramework"
     xmlns:smmedia="clr-namespace:SM.Media.MediaPlayer;assembly=SM.Media.MediaPlayer.WP8"
     mc:Ignorable="d"
@@ -23,11 +23,7 @@
                 <smmedia:StreamingMediaPlugin />
             </mmppf:MediaPlayer.Plugins>
         </mmppf:MediaPlayer>
-        <!--<mmppf:MediaPlayer Source="https://devimages.apple.com.edgekey.net/resources/http-streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8">
-            <mmppf:MediaPlayer.Plugins>
-                <smmedia:StreamingMediaPlugin />
-            </mmppf:MediaPlayer.Plugins>
-        </mmppf:MediaPlayer>-->
+        <Image x:Name="ImageThumbnail" HorizontalAlignment="Center" Height="250" VerticalAlignment="Center" Width="250" Margin="0" />
     </Grid>
 
 </phone:PhoneApplicationPage>

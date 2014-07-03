@@ -46,6 +46,8 @@ namespace TV_Thailand
         public static string OTV_APP_ID = "15";
         public static string OTV_API_VERSION = "1.0";
 
+        public static bool isLoading = false;
+
         public static String GetTimestamp()
         {
             return DateTime.Now.ToString("yyyyMMddHHmm");
@@ -89,11 +91,6 @@ namespace TV_Thailand
         public string getUrlChannel(string cat_id, int start)
         {
             return String.Format(@"{0}/channel/{1}/{2}?device=wp&time={3}", Domain, cat_id, start, GetTimestamp());
-        }
-
-        public string getUrlWhatsNew(int start)
-        {
-            return String.Format(@"{0}/whatsnew/{1}?device=wp&time={2}", Domain, start, GetTimestamp());
         }
 
         public string getUrlProgramSearch(string keyword, int start)
@@ -210,11 +207,6 @@ namespace TV_Thailand
                 {
                     MessageBox.Show(ex.Message);
                 }
-                finally
-                {
-
-                }
-
 
                 //url = "http://www.youtube.com/watch?v=" + videoKeys[0];
                 //string url = "http://www.youtube.com/embed/" + videoId + "?autoplay=1";
@@ -257,10 +249,12 @@ namespace TV_Thailand
 
         private void playMThaiVideoFromAPI(string videoId)
         {
+            isLoading = true;
             Uri mthaiUri = new Uri("http://video.mthai.com/get_config_event.php?id=" + videoId);
             WebClient webClient = new WebClient();
             webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler((sender, e) =>
                 {
+                    isLoading = false;
                     if (e.Error != null)
                     {
                         MessageBox.Show(e.Error.Message);
@@ -302,6 +296,7 @@ namespace TV_Thailand
 
         private void playMThaiVideoFromWeb(string videoId)
         {
+            isLoading = true;
             Uri mthaiUri = new Uri("http://video.mthai.com/cool/player/" + videoId + ".html");
             WebClient webClient = new WebClient();
             //webClient.Headers[HttpRequestHeader.UserAgent] = UserAgent_iOS;
@@ -321,6 +316,7 @@ namespace TV_Thailand
 
         private void playMThaiVideoWithPassword(string videoId, string password)
         {
+            isLoading = true;
             Uri mthaiUri = new Uri("http://video.mthai.com/cool/player/" + videoId + ".html");
             WebClient webClient = new WebClient();
 
@@ -346,6 +342,7 @@ namespace TV_Thailand
 
         void ExtractMthaiVideo(string videoId, string content)
         {
+            isLoading = false;
             try
             {
                 string varKey = "defaultClip";

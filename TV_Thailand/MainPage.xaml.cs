@@ -35,7 +35,7 @@ namespace TV_Thailand
         List<ProgramItem> programItems = new List<ProgramItem>();
         List<InHouseAdItem> inHouseAds = new List<InHouseAdItem>();
 
-        bool isLoadWhatsNew = false;
+        bool isLoadRecents = false;
         bool isLoadCategory = false;
         bool isLoadChannel = false;
         bool isLoadRadio = false;
@@ -79,7 +79,7 @@ namespace TV_Thailand
             imageBrush.ImageSource = bitmapImage;
             MainPanorama.Background = imageBrush;
 
-            loadWhatsNew();
+            loadRecents();
             loadInHosueAds();
             loadSection();
         }
@@ -95,8 +95,8 @@ namespace TV_Thailand
             if (MainPanorama.SelectedIndex == 0)
             {
                 btnRefresh.Click += ApplicationBarIconButton_Refresh_Click;
-                if (!isLoadWhatsNew)
-                    loadWhatsNew();
+                if (!isLoadRecents)
+                    loadRecents();
             }
             else if (MainPanorama.SelectedIndex == 1)
             {
@@ -120,15 +120,8 @@ namespace TV_Thailand
             }
         }
 
-        private void loadWhatsNew()
+        private void loadRecents()
         {
-            //var entrypoint = new ShellTileSchedule();
-            //entrypoint.RemoteImageUri = new Uri("http://www.makathon.com/placeholder.png");
-            //entrypoint.Interval = UpdateInterval.EveryHour;
-            //entrypoint.Recurrence = UpdateRecurrence.Interval;
-            //entrypoint.StartTime = DateTime.Now;
-            //entrypoint.Start();
-
             if (!NetworkInterface.GetIsNetworkAvailable())
             {
                 MessageBox.Show("Applications unable to connect to internet");
@@ -136,15 +129,15 @@ namespace TV_Thailand
             else
             {
                 SystemTray.IsVisible = loadingProgressBar.IsVisible = true;
-                string url = Utility.Instance.getUrlWhatsNew(0);
-                Uri whatsNewUri = new Uri(url);
+                string url = Utility.Instance.getUrlCategory("recents", 0);
+                Uri recentsUri = new Uri(url);
                 WebClient webClient = new WebClient();
-                webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(whatsNew_DownloadStringCompleted);
-                webClient.DownloadStringAsync(whatsNewUri);
+                webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(recents_DownloadStringCompleted);
+                webClient.DownloadStringAsync(recentsUri);
             }
         }
 
-        void whatsNew_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        void recents_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             SystemTray.IsVisible = loadingProgressBar.IsVisible = false;
             if (e.Error != null)
@@ -153,7 +146,7 @@ namespace TV_Thailand
             }
             else
             {
-                isLoadWhatsNew = true;
+                isLoadRecents = true;
                 JObject json = JObject.Parse(e.Result);
                 programItems.Clear();
                 JToken programs = json["programs"];
@@ -166,8 +159,8 @@ namespace TV_Thailand
                 Dispatcher.BeginInvoke(
                     () =>
                     {
-                        ListBox_WhatsNew.ItemsSource = null;
-                        ListBox_WhatsNew.ItemsSource = programItems;
+                        ListBox_Recent.ItemsSource = null;
+                        ListBox_Recent.ItemsSource = programItems;
                     }
                 );
             }
@@ -282,7 +275,7 @@ namespace TV_Thailand
             {
                 if (!selectedCh.hasShow)
                 {
-                    NavigateToPlayStreanm(selectedCh.url);
+                    NavigateToPlayStream(selectedCh.url);
                 }
                 else
                 {
@@ -302,7 +295,7 @@ namespace TV_Thailand
                                     NavigateToChannel(selectedCh);
                                     break;
                                 case CustomMessageBoxResult.RightButton:
-                                    NavigateToPlayStreanm(selectedCh.url);
+                                    NavigateToPlayStream(selectedCh.url);
                                     break;
                                 default:
                                     break;
@@ -325,9 +318,16 @@ namespace TV_Thailand
             NavigationService.Navigate(new Uri("/ProgramPage.xaml?mode=ch&id=" + channel.id + "&title=" + HttpUtility.UrlEncode(channel.title), UriKind.Relative));
         }
 
-        private void NavigateToPlayStreanm(string url)
+        private void NavigateToPlayStream(string url)
         {
             PhoneApplicationService.Current.State["StreamURL"] = url;
+            NavigationService.Navigate(new Uri("/MediaPlayerPage.xaml", UriKind.Relative));
+        }
+
+        private void NavigateToPlayStream(string url, string thumbnail)
+        {
+            PhoneApplicationService.Current.State["StreamURL"] = url;
+            PhoneApplicationService.Current.State["ThumbnailURL"] = thumbnail;
             NavigationService.Navigate(new Uri("/MediaPlayerPage.xaml", UriKind.Relative));
         }
 
@@ -335,31 +335,33 @@ namespace TV_Thailand
         {
             if (ListBox_Radio.SelectedIndex == -1) return;
             RadioItem selectedRadio = radioItems[ListBox_Radio.SelectedIndex];
-            NavigateToPlayStreanm(selectedRadio.url);
+            NavigateToPlayStream(selectedRadio.url, selectedRadio.thumbnail);
             ListBox_Radio.SelectedIndex = -1;
         }
 
-        private void ListBox_WhatsNew_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListBox_Recent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ListBox_WhatsNew.SelectedIndex == -1) return;
-            ProgramItem selectedProgram = programItems[ListBox_WhatsNew.SelectedIndex];
-            if (selectedProgram.is_otv)
-            {
-                NavigationService.Navigate(new Uri("/OTVShowPivotPage.xaml?title=" + HttpUtility.UrlEncode(selectedProgram.title)
-                    + "&otv_id=" + selectedProgram.otv_id
-                    + "&otv_api_name=" + selectedProgram.otv_api_name, UriKind.Relative));
-            }
-            else
-            {
-                NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
-            }
+            if (ListBox_Recent.SelectedIndex == -1) return;
+            ProgramItem selectedProgram = programItems[ListBox_Recent.SelectedIndex];
+            //if (selectedProgram.is_otv)
+            //{
+            //    NavigationService.Navigate(new Uri("/OTVShowPivotPage.xaml?title=" + HttpUtility.UrlEncode(selectedProgram.title)
+            //        + "&otv_id=" + selectedProgram.otv_id
+            //        + "&otv_api_name=" + selectedProgram.otv_api_name, UriKind.Relative));
+            //}
+            //else
+            //{
+            //    NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
+            //}
 
-            ListBox_WhatsNew.SelectedIndex = -1;
+            NavigationService.Navigate(new Uri("/ProgramPivotPage.xaml?program_id=" + selectedProgram.program_id + "&title=" + HttpUtility.UrlEncode(selectedProgram.title), UriKind.Relative));
+
+            ListBox_Recent.SelectedIndex = -1;
         }
 
         private void ApplicationBarIconButton_Refresh_Click(object sender, EventArgs e)
         {
-            loadWhatsNew();
+            loadRecents();
         }
 
         private void ApplicationBarIconButton_RefreshCategory_Click(object sender, EventArgs e)
@@ -384,7 +386,7 @@ namespace TV_Thailand
 
         private void contextMenuPin_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxItem selectedListBoxItem = this.ListBox_WhatsNew.ItemContainerGenerator.ContainerFromItem((sender as MenuItem).DataContext) as ListBoxItem;
+            ListBoxItem selectedListBoxItem = this.ListBox_Recent.ItemContainerGenerator.ContainerFromItem((sender as MenuItem).DataContext) as ListBoxItem;
             ProgramItem selectedProgram = selectedListBoxItem.Content as ProgramItem;
 
             // check if secondary tile is already made and pinned
