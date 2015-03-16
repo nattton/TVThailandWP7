@@ -70,7 +70,7 @@ namespace TV_Thailand
 
         public string getUrlSection()
         {
-            return String.Format(@"{0}/section?device=wp", Domain);
+            return String.Format(@"{0}/section?device=wp&time={1}", Domain, GetTimestamp());
         }
 
         public string getUrlCategory()
@@ -372,8 +372,8 @@ namespace TV_Thailand
             {
                 HtmlDocument doc = new HtmlDocument();
                 doc.LoadHtml(content);
-                HtmlNodeCollection sources = doc.DocumentNode.SelectNodes("//source");
-                if (sources != null && sources.Count > 0)
+                var sources = doc.DocumentNode.Descendants("source");
+                if (sources != null)
                 {
                     foreach (HtmlNode link in sources)
                     {
@@ -408,7 +408,7 @@ namespace TV_Thailand
             }
             catch (Exception e)
             {
-                // MessageBox.Show(e.Message);
+                MessageBox.Show(e.Message);
             }
         }
     }
